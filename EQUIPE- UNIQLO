@@ -1,0 +1,80 @@
+# Ting PENG / Julie Stela
+# PROBLEMATIQUE /  How much of UNIQLO's weekly revenue is coming from E-commerce ?
+
+# UNIQLO is a trading brand of Fast Retailing, a Japanese clothing design, manufacturing and distribution group. It was founded in 1984 by Tadashi Yanai
+# It holds the number one position in sales of clothing shops in Japan. 
+# This company has more than 851 shops in Japan and 540 in china.
+
+# To answer our question, we will analyse 
+# What kind of channels the clients prefer in different cities;
+# What kind of channels the clients prefer in different gender;
+# What knid of channels the clients prefer in different age.
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import scipy as sp
+%matplotlib inline
+# Importer the data from the excel on the destop of my computer
+uniqlo=pd.read_csv(r'C:\Users\33636\Desktop\ting\data analyze\Python data\zuoyeweek1.uniqlo.csv')
+# View the total lignes and columns for the database
+# 22293 ranges et 13 colonnes
+uniqlo.shape
+(22293, 13)
+# View the colonnes situation of ranges
+uniqlo.head(10)
+store_id	city	channel	gender_group	age_group	wkd_ind	product	customer	revenue	order	quant	unit_cost	unit_price
+0	658	shenzhen	offline	Female	25-29	Weekday	News	4	796.0	4	4	59	199
+1	146	hangzhou	offline	Female	25-29	Weekday	Sportswear	1	149.0	1	1	49	149
+2	70	shenzhen	offline	Male	>=60	Weekday	T-shirt	2	178.0	2	2	49	89
+3	658	shenzhen	offline	Female	25-29	Weekday	T-shirt	1	59.0	1	1	49	59
+4	229	shenzhen	offline	Male	20-24	Weekend	Socks	2	65.0	2	3	9	22
+5	28	wuhan	online	Female	35-39	Weekend	T-shirt	1	97.0	1	1	49	97
+6	649	hangzhou	offline	Female	25-29	Weekend	Shorts	1	33.0	1	1	19	33
+7	520	hangzhou	offline	Male	>=60	Weekend	T-shirt	2	158.0	2	2	49	79
+8	649	hangzhou	offline	Female	30-34	Weekend	Jeans	3	157.0	3	3	69	52
+9	21	beijing	offline	Female	45-49	Weekend	Sweater	1	199.0	1	1	99	199
+#As we can see from the table,there are 13 colonnes totally.
+
+#The "store_id" is the lables from each magazines in China;
+#the "customer" is the quantity of the clients;
+#the "revenue" is the CA of all the clients;par example 4*199=796
+#the "order" is the commandes that the clients order; 
+#the "quant" is the exact quantity of products that the clients bought;
+#the "unit_cost" is the prix achat from the fournisseurs;
+#the "unit_price" is the prix vent for the clients
+plt.figure(figsize=(10,10))
+sns.barplot(x='city',y='revenue',hue='channel',data=uniqlo,estimator=sum,order=uniqlo.groupby('city').revenue.sum().sort_values(ascending=False).index)
+<AxesSubplot:xlabel='city', ylabel='revenue'>
+
+# As we can see from the chart,in general,Shenzhen got the most revenue from the offline and Guangzhou got the most revenue from the online.
+# For some middle cities for example wuhan,chongqin and xian,they got a lot of revenue from clients online;
+# but for the big compnies such as shenzhen,hangzhou and beijing, they do not have the data for online;
+# It is not normal that there is no data for online in big cities,whose e-commerce developed so well;
+# If the data is right,we have to give some advice for Shenzhen and Beijing that compared to other cities,they have to develop the e-commerce.
+sns.barplot(x='gender_group',y='revenue',hue='channel',data=uniqlo,estimator=sum,order=uniqlo.groupby('gender_group').revenue.sum().sort_values(ascending=False).index)
+<AxesSubplot:xlabel='gender_group', ylabel='revenue'>
+
+# In this table, we see that in the 10 cities where UNIQLO shops are located, 
+# There is a high number of offline orders for women's clothing with a revenue of more than 22293 yuan( 2.0)
+# against only less than 10000 yuan(0.8) for men of all ages. 
+# In terms of online orders, sales are down with - 5000 yuan( 0.4) orders for women and - 2000 yuan(0.2) for men of all ages.
+plt.figure(figsize=(10,10))
+sns.barplot(x='age_group',y='revenue',hue='channel',data=uniqlo,estimator=sum,order=uniqlo.groupby('age_group').revenue.sum().sort_values(ascending=False).index)
+<AxesSubplot:xlabel='age_group', ylabel='revenue'>
+
+# This table is a visualization of all the sales of men's and women's clothing offline and online,
+# aged between 25 and 59 years old in the 10 cities where the UNIQLO shop is located. 
+# We can see that the total revenue of offline sales of men and women's clothing aged between 25 and 34 are high at + 600,000 yuan. 
+# The chain of offline sales decreases as the income is 490000 yuan for people aged between 35- 39 
+# and 450000 yuan for people aged between 20 and 24.
+# Then there is a decrease in income from 200,000 to 0 for people aged 40-60
+# In conclusion, 
+# For most cities,the clients prefer go shoopping on the UNIQLO stores instead of online shopping.On the one hand,maybe the clients 
+# prefer the service of UNIQLO offline,on the other hand,UNIQLO does not put more attention to the business online or e-commerce.
+# For the gender, we can see that no matter the offline or online, the products of UNIQLO is more popular among wonmen than men.
+# For the age,we can see that UNIQLO is more famous in young people 25-29  no matter offline or online.
+
+# For the future
+# We can use k-means to predict the range of age of the clients of UNIQLO in the future
+# It is useful for us to use k-means to predict the revenue of differents cities in the future
